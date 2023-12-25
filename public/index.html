@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+</head>
+
+<body>
+
+    <label for="usernameInput">Username:</label>
+    <input type="text" id="usernameInput" value="rahul" required>
+    <br>
+    <label for="passwordInput">Password:</label>
+    <input type="password" id="passwordInput" value="123" required>
+    <br>
+    <button id="loginButton">Login</button>
+    <br>
+    <div id="profileContainer"></div>
+
+    <script>
+        function fetchStudentProfile() {
+            // Fetch Student Profile
+            fetch('http://localhost:3000/auth/student/profile', {    
+                method: 'GET',
+                credentials: 'include', // include cookies in the request
+            })
+                .then(response => response.json())
+                .then(profileData => {
+
+                    console.log(profileData);
+
+                    // Display the profile data
+                    const profileContainer = document.getElementById('profileContainer');
+                    profileContainer.innerHTML = `<h2>Student Profile</h2>
+                                        <p>Name: ${profileData.student.full_name}</p>
+                                        <p>Email: ${profileData.student.email}</p>
+                                        <p>Roll Number: ${profileData.student.roll_number}</p>
+                                        <p>Address: ${profileData.student.address}</p>
+                                        <p>Branch: ${profileData.student.branch}</p>
+                                        <p>Year: ${profileData.student.year}</p>
+                                        `;
+
+                })
+                .catch(error => {
+                    console.error('Error fetching profile:', error.message);
+                });
+        }
+
+        function fetchStudentToken() {
+            const username = document.getElementById('usernameInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            // Student Login
+            fetch('http://localhost:3000/auth/student/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                credentials: 'include', // include cookies in the request
+                body: JSON.stringify({ username, password }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    fetchStudentProfile();
+
+                })
+                .catch(error => {
+                    console.error('Error during login:', error.message);
+                });
+        }
+
+        // Attach the fetchStudentToken function to the button click event
+        document.getElementById('loginButton').addEventListener('click', fetchStudentToken);
+
+        // On page load, check if the user is already authenticated and fetch the profile
+        fetchStudentProfile();
+    </script>
+
+</body>
+
+</html>

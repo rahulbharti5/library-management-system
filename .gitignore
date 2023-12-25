@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+lib-cov
+coverage
+.nyc_output
+.nyc_cache
+
+# TypeScript
+*.tsbuildinfo
+*.tsbuildinfo.*
+
+# Docker
+.docker
+
+# Debugging logs
+debug.log
+
+# Environment variables
+.env
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
